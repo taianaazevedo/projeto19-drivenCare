@@ -10,6 +10,18 @@ async function searchDoctor(search) {
   );
 }
 
+async function scheduleAppointment({day, start_time, end_time, patient, doctorId}){
+
+  await db.query(`
+    INSERT INTO appointments
+    (patient_id, doctor_id, day, start_time, end_time)
+    VALUES ($1, $2, $3, $4, $5)
+  `, [patient, doctorId, day, start_time, end_time])
+
+}
+
+
 export default {
   searchDoctor,
+  scheduleAppointment
 };
