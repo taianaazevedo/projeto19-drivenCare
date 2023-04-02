@@ -41,6 +41,17 @@ async function scheduleAppointment(req, res, next) {
   }
 }
 
+async function getAppointmentByPatient(req, res, next){
+    const patient = res.locals.patient
+    try {
+        
+        
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
 export default {
   searchDoctor,
   scheduleAppointment,
