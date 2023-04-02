@@ -20,8 +20,22 @@ async function scheduleAppointment({day, start_time, end_time, patient, doctorId
 
 }
 
+async function isAvailable({ day, start_time, end_time, doctorId }) {
+  return await db.query(`
+    SELECT *
+    FROM appointments
+    WHERE doctor_id = $1
+      AND day = $2
+      AND (
+        (start_time <= $3 AND end_time >= $3)
+        OR (start_time <= $4 AND end_time >= $4)
+        OR (start_time >= $3 AND end_time <= $4)
+      )
+  `, [doctorId, day, start_time, end_time]);
+}
 
 export default {
   searchDoctor,
-  scheduleAppointment
+  scheduleAppointment, 
+  isAvailable
 };
