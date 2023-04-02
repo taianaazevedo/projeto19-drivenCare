@@ -5,7 +5,7 @@ import appointmentRoutes from "./appointmentRoute.js";
 const routes = Router()
 
 routes.use("/users", userRoutes)
-routes.use("/appoitment", appointmentRoutes)
+routes.use("/appointment", appointmentRoutes)
 
 
 export default routes

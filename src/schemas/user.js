@@ -1,6 +1,6 @@
 import joi from "joi"
 
-export const signUpSchema = joi.object({
+export const signUpPatientSchema = joi.object({
     name: joi.string().min(3).required(),
     email: joi.string().email().required(),
     password: joi.string().required(),
@@ -8,12 +8,7 @@ export const signUpSchema = joi.object({
 
 })
 
-export const signInSchema = joi.object({
-    email: joi.string().email().required(),
-    password: joi.string().required()
-})
-
-export const singUpDoctor = joi.object({
+export const singUpDoctorSchema = joi.object({
     name: joi.string().min(3).required(),
     email: joi.string().email().required(),
     password: joi.string().required(),
@@ -21,3 +16,10 @@ export const singUpDoctor = joi.object({
     specialty: joi.string().required(),
     location: joi.string().required()
 })
+
+
+export const signInSchema = joi.object({
+    email: joi.string().email().required(),
+    password: joi.string().required()
+})
+
