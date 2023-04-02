@@ -13,7 +13,7 @@ async function createPatient({name, email, password}){
 
 async function createDoctor({name, email, password, specialty, location}){
     const { rowCount } = await userRepository.findDoctorByEmail(email)
-    if(rowCount) throw new Error("o email do médico")
+    if(rowCount) throw new Error("o email do médico já está em uso")
 
     const hashPassword = await bcrypt.hash(password, 10)
     await userRepository.createDoctor({name, email, password: hashPassword, specialty, location})

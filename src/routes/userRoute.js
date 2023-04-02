@@ -6,9 +6,9 @@ import userController from "../controllers/userController.js";
 const userRoutes = Router ()
 
 userRoutes.post("/signup", validateSchema(signUpPatientSchema), userController.createPatient)
+userRoutes.post("/signin", validateSchema(signInSchema), userController.signInPatient)
 userRoutes.post("/signupdoc", validateSchema(singUpDoctorSchema), userController.createDoctor)
-userRoutes.post("/signin", validateSchema(signInSchema), userController.signInPatient )
-userRoutes.post("/signindoc", validateSchema(signInSchema), userController.signInDoctor)
+userRoutes.post("/signindoc", validateSchema(signInSchema), userController.signInDoctor) 
 
 
 export default userRoutes

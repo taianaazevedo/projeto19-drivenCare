@@ -23,6 +23,7 @@ async function createDoctor(req, res, next) {
     });
     return res.sendStatus(201);
   } catch (error) {
+    console.log(error)
     next(error);
   }
 }
@@ -33,6 +34,7 @@ async function signInPatient(req, res, next) {
     const token = await userService.signInPatient({ email, password });
     return res.send({ token });
   } catch (error) {
+    console.log(error)
     next(error);
   }
 }
@@ -43,6 +45,7 @@ async function signInDoctor(req, res, next) {
     const token = await userService.signInDoctor({ email, password });
     return res.send({ token });
   } catch (error) {
+    console.log(error)
     next(error);
   }
 }

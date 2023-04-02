@@ -16,10 +16,12 @@ async function authValidationPatient(req, res, next) {
         if(error) throw new Error("não autorizado")
         if(decoded.type !== "patient") throw new Error("não autorizado")
 
-        const { rows: [user]} = await userRepository.findPatientById(decoded.userId)
-        if(!user) throw new Error("não autorizado")
+        const { rows: [patient]} = await userRepository.findPatientById(decoded.userId)
+        if(!patient) throw new Error("não autorizado")
 
-        res.locals.user = user
+        res.locals.patient = patient
+
+        next()
     } catch (error) {
         next(error)
         
@@ -42,10 +44,11 @@ async function authValidationDoctor(req, res, next) {
           if(error) throw new Error("não autorizado")
           if(decoded.type !== "doctor") throw new Error("não autorizado")
   
-          const { rows: [user]} = await userRepository.findDoctorById(decoded.userId)
-          if(!user) throw new Error("não autorizado")
+          const { rows: [doctor]} = await userRepository.findDoctorById(decoded.userId)
+          if(!doctor) throw new Error("não autorizado")
   
-          res.locals.user = user
+          res.locals.doctor = doctor
+          next()
       } catch (error) {
           next(error)
           
