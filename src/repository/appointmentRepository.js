@@ -34,8 +34,18 @@ async function isAvailable({ day, start_time, end_time, doctorId }) {
   `, [doctorId, day, start_time, end_time]);
 }
 
+async function getAppointmentByPatient({id}){
+  return await db.query(`
+  SELECT appointments.id, appointments.day, appointments.start_time, doctors.name AS doctor_name, doctors.specialty
+  FROM appointments
+  JOIN doctors ON appointments.doctor_id = doctors.id
+  WHERE appointments.patient_id = $1;
+  `, [id])
+}
+
 export default {
   searchDoctor,
   scheduleAppointment, 
-  isAvailable
+  isAvailable, 
+  getAppointmentByPatient
 };
