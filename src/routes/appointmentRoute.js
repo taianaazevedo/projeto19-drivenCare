@@ -7,15 +7,15 @@ import { appointmentSchema } from "../schemas/appointment.js";
 
 const appointmentRoutes = Router()
 
-appointmentRoutes.get("/availability/:id", authMiddleware.authValidationPatient) //só para paciente (verificar disponibilidade)
-appointmentRoutes.get("/search", authMiddleware.authValidationPatient, appointmentController.searchDoctor) // só para paciente (pesquisar por médicos)
-appointmentRoutes.post("/:id", authMiddleware.authValidationPatient, validateSchema(appointmentSchema), appointmentController.scheduleAppointment) //só para o paciente (agendar consulta)
-appointmentRoutes.get("/", authMiddleware.authValidationPatient, appointmentController.getAppointmentByPatient) // só para o paciente (visualizar consulta agendada)
-appointmentRoutes.get("/history", authMiddleware.authValidationPatient) //só para paciente (pegar histórico)
-appointmentRoutes.get("/", authMiddleware.authValidationDoctor) //só para o médico (visualizar consulta agendada)
+appointmentRoutes.get("/availability/:id", authMiddleware.authValidationPatient, appointmentController.getAvailability) 
+appointmentRoutes.get("/search", authMiddleware.authValidationPatient, appointmentController.searchDoctor) 
+appointmentRoutes.post("/:id", authMiddleware.authValidationPatient, validateSchema(appointmentSchema), appointmentController.scheduleAppointment) 
+appointmentRoutes.get("/", authMiddleware.authValidationPatient, appointmentController.getAppointmentByPatient) 
+appointmentRoutes.get("/history", authMiddleware.authValidationPatient, appointmentController.getHistoryByPatient)
+appointmentRoutes.get("/schedule", authMiddleware.authValidationDoctor, appointmentController.getAppointmentByDoctor)
 appointmentRoutes.patch("/:id", authMiddleware.authValidationDoctor) //só para o médico (confirmar consulta)
 appointmentRoutes.delete("/:id", authMiddleware.authValidationDoctor) // só para médico (cancelar consulta)
-appointmentRoutes.get("/history", authMiddleware.authValidationDoctor) //só para médico (pegar histórico)
+appointmentRoutes.get("/historydoc", authMiddleware.authValidationDoctor, appointmentController.getHistoryByDoctor)
 
 
 export default appointmentRoutes

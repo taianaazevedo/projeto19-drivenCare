@@ -63,8 +63,70 @@ async function getAppointmentByPatient(req, res, next) {
   }
 }
 
+async function getAppointmentByDoctor(req, res, next){
+  const doctor = res.locals.doctor
+
+  try {
+    const result = await appointmentService.getAppointmentByDoctor({
+      id: doctor.id,
+    });
+
+    return res.send({ result });
+    
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}
+
+async function getAvailability(req, res, next){
+  const {id} = req.params
+  try {
+    const result = await appointmentService.getAvailability({id});
+
+    return res.send({ result });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}
+
+async function getHistoryByPatient(req, res, next){
+  const patient = res.locals.patient
+  try {
+    const result = await appointmentService.getHistoryByPatient({
+      id: patient.id,
+    });
+  
+    return res.send({ result });
+  } catch (error) {
+    console.log(error);
+    next(error);
+    
+  }  
+}
+
+async function getHistoryByDoctor(req, res, next){
+  const doctor = res.locals.doctor
+  try {
+    const result = await appointmentService.getHistoryByDoctor({
+      id: doctor.id,
+    });
+  
+    return res.send({ result });
+  } catch (error) {
+    console.log(error);
+    next(error);
+    
+  }  
+}
+
 export default {
   searchDoctor,
   scheduleAppointment,
-  getAppointmentByPatient
+  getAppointmentByPatient,
+  getAppointmentByDoctor,
+  getAvailability,
+  getHistoryByPatient,
+  getHistoryByDoctor
 };
