@@ -78,13 +78,38 @@ async function getHistoryByDoctor({id}){
   `, [id])
 }
 
+async function confirmAppointment({id}){
+  await db.query(`
+    INSERT INTO confirmed_appointments (appointment_id)
+    VALUES ($1)
+  `, [id])
+}
+
+async function deleteAppointment({id, doctor_id}){
+  await db.query(`
+    DELETE FROM appointments 
+    WHERE id = $1
+    AND doctor_id = $2
+  `, [id, doctor_id])
+}
+
+async function getAppointmentById({id}){
+  return await db.query(`
+    SELECT  * FROM appointments
+    WHERE id = $1 
+  `, [id])
+}
+
 export default {
   searchDoctor,
   scheduleAppointment, 
   isAvailable, 
   getAppointmentByPatient,
   getAppointmentByDoctor,
+  getAppointmentById,
   getAvailability,
   getHistoryByPatient,
-  getHistoryByDoctor
+  getHistoryByDoctor,
+  confirmAppointment,
+  deleteAppointment
 };

@@ -8,7 +8,7 @@ async function searchDoctor(req, res, next) {
 
     return res.send({ result });
   } catch (error) {
-    next(error);
+    return res.sendStatus(500)
   }
 }
 
@@ -44,8 +44,7 @@ async function scheduleAppointment(req, res, next) {
 
     return res.sendStatus(201);
   } catch (error) {
-    console.log(error);
-    next(error);
+    return res.sendStatus(500)
   }
 }
 
@@ -58,8 +57,7 @@ async function getAppointmentByPatient(req, res, next) {
 
     return res.send({ result });
   } catch (error) {
-    console.log(error);
-    next(error);
+    return res.sendStatus(500)
   }
 }
 
@@ -74,8 +72,7 @@ async function getAppointmentByDoctor(req, res, next){
     return res.send({ result });
     
   } catch (error) {
-    console.log(error);
-    next(error);
+    return res.sendStatus(500)
   }
 }
 
@@ -86,8 +83,7 @@ async function getAvailability(req, res, next){
 
     return res.send({ result });
   } catch (error) {
-    console.log(error);
-    next(error);
+    return res.sendStatus(500)
   }
 }
 
@@ -100,9 +96,7 @@ async function getHistoryByPatient(req, res, next){
   
     return res.send({ result });
   } catch (error) {
-    console.log(error);
-    next(error);
-    
+    return res.sendStatus(500)
   }  
 }
 
@@ -115,10 +109,32 @@ async function getHistoryByDoctor(req, res, next){
   
     return res.send({ result });
   } catch (error) {
-    console.log(error);
-    next(error);
-    
+    return res.sendStatus(500)
   }  
+}
+
+async function confirmAppointment(req, res, next){
+  const {id} = req.params
+  const doctor = res.locals.doctor
+  try {
+    await appointmentService.confirmAppointment({id, doctor_id: doctor.id})
+
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+}
+
+async function deleteAppointment(req, res, next){
+  const { id } = req.params
+  const doctor = res.locals.doctor
+  try {
+    await appointmentService.deleteAppointment({id, doctor_id: doctor.id})
+
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.sendStatus(500)
+  }
 }
 
 export default {
@@ -128,5 +144,7 @@ export default {
   getAppointmentByDoctor,
   getAvailability,
   getHistoryByPatient,
-  getHistoryByDoctor
+  getHistoryByDoctor,
+  confirmAppointment,
+  deleteAppointment
 };

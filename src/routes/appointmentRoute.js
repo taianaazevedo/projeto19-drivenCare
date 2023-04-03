@@ -13,8 +13,8 @@ appointmentRoutes.post("/:id", authMiddleware.authValidationPatient, validateSch
 appointmentRoutes.get("/", authMiddleware.authValidationPatient, appointmentController.getAppointmentByPatient) 
 appointmentRoutes.get("/history", authMiddleware.authValidationPatient, appointmentController.getHistoryByPatient)
 appointmentRoutes.get("/schedule", authMiddleware.authValidationDoctor, appointmentController.getAppointmentByDoctor)
-appointmentRoutes.patch("/:id", authMiddleware.authValidationDoctor) //só para o médico (confirmar consulta)
-appointmentRoutes.delete("/:id", authMiddleware.authValidationDoctor) // só para médico (cancelar consulta)
+appointmentRoutes.post("/confirm/:id", authMiddleware.authValidationDoctor, appointmentController.confirmAppointment)
+appointmentRoutes.delete("/:id", authMiddleware.authValidationDoctor, appointmentController.deleteAppointment) // só para médico (cancelar consulta)
 appointmentRoutes.get("/historydoc", authMiddleware.authValidationDoctor, appointmentController.getHistoryByDoctor)
 
 

@@ -5,7 +5,7 @@ import "dotenv/config"
 
 async function createPatient({name, email, password}){
     const { rowCount } = await userRepository.findPatientByEmail(email)
-    if(rowCount) throw new Error("o email do paciente já está em uso")
+    if(rowCount) throw new Error("Email already exists")
 
     const hashPassword = await bcrypt.hash(password, 10)
     await userRepository.createPatient({name, email, password: hashPassword})
@@ -13,7 +13,7 @@ async function createPatient({name, email, password}){
 
 async function createDoctor({name, email, password, specialty, location}){
     const { rowCount } = await userRepository.findDoctorByEmail(email)
-    if(rowCount) throw new Error("o email do médico já está em uso")
+    if(rowCount) throw new Error("Email already exists")
 
     const hashPassword = await bcrypt.hash(password, 10)
     await userRepository.createDoctor({name, email, password: hashPassword, specialty, location})
@@ -21,10 +21,10 @@ async function createDoctor({name, email, password, specialty, location}){
 
 async function signInPatient({email, password}){
     const { rowCount, rows: [user]} = await userRepository.findPatientByEmail(email)
-    if(!rowCount) throw new Error ("credencial inválida")
+    if(!rowCount) throw new Error ("Invalid credencial")
 
     const validPassword = await bcrypt.compare(password, user.password)
-    if(!validPassword) throw new Error ("credencial inválidaa")
+    if(!validPassword) throw new Error ("Invalid credencial")
 
     const token = jwt.sign({userId: user.id, type: "patient"}, process.env.SECRET_KEY, {expiresIn: 86400})
 
@@ -33,10 +33,10 @@ async function signInPatient({email, password}){
 
 async function signInDoctor({email, password}){
     const { rowCount, rows: [user]} = await userRepository.findDoctorByEmail(email)
-    if(!rowCount) throw new Error ("credencial inválida")
+    if(!rowCount) throw new Error ("Invalid credencial")
 
     const validPassword = await bcrypt.compare(password, user.password)
-    if(!validPassword) throw new Error ("credencial inválidaa")
+    if(!validPassword) throw new Error ("Invalid credencial")
 
     const token = jwt.sign({userId: user.id, type: "doctor"}, process.env.SECRET_KEY, {expiresIn: 86400})
 

@@ -3,7 +3,7 @@ import appointmentRepository from "../repository/appointmentRepository.js"
 async function searchDoctor(search){
     const { rows, rowCount } = await appointmentRepository.searchDoctor(search)
   
-    if(!rowCount) throw new Error ("não encontrado")
+    if(!rowCount) throw new Error ("Not found")
 
     return rows
 }
@@ -20,14 +20,14 @@ async function isAvailable({day, start_time, end_time, doctorId}){
 
 async function getAppointmentByPatient({id}){
     const {rows, rowCount } = await appointmentRepository.getAppointmentByPatient({id})
-    if(!rowCount) throw new Error("não há agendamento para esse paciente")
+    if(!rowCount) throw new Error("Appointment not found")
 
     return rows
 }
 
 async function getAppointmentByDoctor({id}){
     const {rows, rowCount } = await appointmentRepository.getAppointmentByDoctor({id})
-    if(!rowCount) throw new Error("não há agendamento para esse médico")
+    if(!rowCount) throw new Error("Appointment not found")
 
     return rows
 }
@@ -50,6 +50,24 @@ async function getHistoryByDoctor({id}){
     return rows
 }
 
+async function confirmAppointment({id, doctor_id}){
+    const {rows: [appointment]} = await appointmentRepository.getAppointmentById({id})
+   
+    if(appointment.doctor_id !== doctor_id) throw new Error ("Unauthorized")
+
+    await appointmentRepository.confirmAppointment({id})
+}
+
+async function deleteAppointment({id, doctor_id}){
+    const {rows: [appointment]} = await appointmentRepository.getAppointmentById({id})
+   
+    if(appointment.doctor_id !== doctor_id)
+
+    if(appointment.doctor_id !== doctor_id) throw new Error ("Unauthorized")
+
+    await appointmentRepository.deleteAppointment({id, doctor_id})
+}
+
 export default {
     searchDoctor, 
     scheduleAppointment,
@@ -58,5 +76,7 @@ export default {
     getAppointmentByDoctor,
     getAvailability,
     getHistoryByPatient,
-    getHistoryByDoctor
+    getHistoryByDoctor,
+    confirmAppointment,
+    deleteAppointment
 }
